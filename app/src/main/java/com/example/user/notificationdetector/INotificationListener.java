@@ -16,11 +16,13 @@ public class INotificationListener extends NotificationListenerService {
             Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
             intent.putExtras(extras);
             sendBroadcast(intent);
+
+            this.cancelNotification(sbn.getKey());
+
         }
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {}
-
 
 }
