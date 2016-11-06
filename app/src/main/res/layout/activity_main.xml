@@ -18,22 +18,43 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="none"
+            android:text="Title"
             android:id="@+id/title"
             android:layout_weight="0.1" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="none"
+            android:text="Text"
             android:id="@+id/text"
             android:layout_weight="0.1" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="none"
+            android:text="SubText"
             android:id="@+id/subtext"
+            android:layout_weight="0.1" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="PkgName"
+            android:id="@+id/pkgname"
+            android:layout_weight="0.1" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Key"
+            android:id="@+id/key"
+            android:layout_weight="0.1" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Tag"
+            android:id="@+id/tag"
             android:layout_weight="0.1" />
     </LinearLayout>
 </RelativeLayout>

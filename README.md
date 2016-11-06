@@ -3,7 +3,7 @@
 ### Development
 
 + Android Studio
-+ API 19 (V4.4)
++ API 21 (V5.0)
 
 ### Notification Listener Service
 

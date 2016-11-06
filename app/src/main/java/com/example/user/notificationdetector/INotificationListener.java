@@ -12,13 +12,19 @@ public class INotificationListener extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
         Notification mNotification = sbn.getNotification();
         if(mNotification != null){
-            Bundle extras = mNotification.extras;
+            Bundle data = new Bundle();
+            data.putString("title", mNotification.extras.getString(Notification.EXTRA_TITLE));
+            data.putCharSequence("text", mNotification.extras.getCharSequence(Notification.EXTRA_TEXT));
+            data.putCharSequence("subtext", mNotification.extras.getCharSequence(Notification.EXTRA_SUB_TEXT));
+            data.putString("pkgname", sbn.getPackageName());
+            data.putString("key", sbn.getKey());
+            data.putString("tag", sbn.getTag());
+
             Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
-            intent.putExtras(extras);
+            intent.putExtras(data);
             sendBroadcast(intent);
 
             this.cancelNotification(sbn.getKey());
-
         }
     }
 

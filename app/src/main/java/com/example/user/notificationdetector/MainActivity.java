@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     protected TextView title;
     protected TextView text;
     protected TextView subtext;
+    protected TextView pkgname;
+    protected TextView key;
+    protected TextView tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         title = (TextView)findViewById(R.id.title);
         text = (TextView)findViewById(R.id.text);
         subtext = (TextView)findViewById(R.id.subtext);
+        pkgname = (TextView)findViewById(R.id.pkgname);
+        key = (TextView)findViewById(R.id.key);
+        tag = (TextView)findViewById(R.id.tag);
 
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
@@ -64,13 +70,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
-                Bundle extras = intent.getExtras();
-
-                notification = new Bundle();
-                notification.putString("title", extras.getString(Notification.EXTRA_TITLE));
-                notification.putCharSequence("text", extras.getCharSequence(Notification.EXTRA_TEXT));
-                notification.putCharSequence("subtext", extras.getCharSequence(Notification.EXTRA_SUB_TEXT));
-
+                notification = intent.getExtras();
                 showNotificationInfo();
             }
         }
@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
             title.setText(notification.getString("title"));
             text.setText(notification.getCharSequence("text"));
             subtext.setText(notification.getCharSequence("subtext"));
+            pkgname.setText(notification.getString("pkgname"));
+            key.setText(notification.getString("key"));
+            tag.setText(notification.getString("tag"));
         }
 
     }
