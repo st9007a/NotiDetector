@@ -5,10 +5,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,10 +31,25 @@ public class MainActivity extends AppCompatActivity {
     protected TextView key;
     protected TextView tag;
 
+    protected TextView pkglist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PackageManager p = getPackageManager();
+        List<ApplicationInfo> apps = p.getInstalledApplications(0);
+        List<ApplicationInfo> installed = new ArrayList<ApplicationInfo>();
+
+        for(ApplicationInfo app : apps){
+            if((app.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+                installed.add(app);
+            } else if ((app.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+            } else {
+                installed.add(app);
+            }
+        }
 
         title = (TextView)findViewById(R.id.title);
         text = (TextView)findViewById(R.id.text);
@@ -36,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
         pkgname = (TextView)findViewById(R.id.pkgname);
         key = (TextView)findViewById(R.id.key);
         tag = (TextView)findViewById(R.id.tag);
+        pkglist = (TextView)findViewById(R.id.pkglist);
+
+        String packageList = "";
+        for(int i=0;i<installed.size();i++){
+            packageList += installed.get(i).packageName + "\n";
+        }
+
+        pkglist.setText(packageList);
 
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
@@ -59,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isNotificationAccessEnabled(){
-        String access = Settings.Secure.getString(getApplicationContext().getContentResolver(), NOTIFICATION_ACCESS);
-        String pkgName = getApplicationContext().getPackageName();
+        String access = Settings.Secure.getString(getContentResolver(), NOTIFICATION_ACCESS);
+        String pkgName = getPackageName();
         return access.contains(pkgName);
     }
 
