@@ -1,5 +1,6 @@
 package com.example.user.notificationdetector;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String INTENT_ACTION_NOTIFICATION = "it.gmariotti.notification";
+    public static String INTENT_ACTION_NOTIFICATION = "user.notificationdetector";
     public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
     public static String NOTIFICATION_ACCESS = "enabled_notification_listeners";
     public static boolean IS_BLOCK = false;
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
             broadcastReceiver = new mBroadcastReceiver();
 
         registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_NOTIFICATION));
+
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("message", Activity.MODE_PRIVATE);
+        text.setText(settings.getString("text", "123"));
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.example.user.notificationdetector;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
@@ -25,6 +25,11 @@ public class NotificationListener extends NotificationListenerService {
             Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
             intent.putExtras(data);
             sendBroadcast(intent);
+
+            SharedPreferences settings = getApplicationContext().getSharedPreferences("message", Activity.MODE_PRIVATE);
+            settings.edit()
+                    .putString("text", data.getCharSequence("text").toString())
+                    .commit();
 
             this.cancelNotification(sbn.getKey());
         }
