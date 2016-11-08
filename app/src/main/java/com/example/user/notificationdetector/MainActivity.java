@@ -1,13 +1,9 @@
 package com.example.user.notificationdetector;
 
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,38 +11,33 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     public static String INTENT_ACTION_NOTIFICATION = "it.gmariotti.notification";
     public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
     public static String NOTIFICATION_ACCESS = "enabled_notification_listeners";
-
     public static boolean IS_BLOCK = false;
 
-    protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
-
-    protected CheckBox isblock;
+    protected CheckBox isBlock;
 
     protected TextView title;
     protected TextView text;
-    protected TextView subtext;
-    protected TextView pkgname;
+    protected TextView subText;
+    protected TextView pkgName;
     protected TextView key;
     protected TextView tag;
 
-    private CheckBox.OnCheckedChangeListener chklistener = new CompoundButton.OnCheckedChangeListener() {
+    protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
+    private CheckBox.OnCheckedChangeListener checkBlock = new CheckBox.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            IS_BLOCK = isblock.isChecked();
+            IS_BLOCK = isBlock.isChecked();
 
             if(!IS_BLOCK) {
                 title.setText("Title");
                 text.setText("Text");
-                subtext.setText("SubText");
-                pkgname.setText("PkgName");
+                subText.setText("SubText");
+                pkgName.setText("PkgName");
                 key.setText("Key");
                 tag.setText("Tag");
             }
@@ -58,16 +49,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        isblock = (CheckBox)findViewById(R.id.isblock);
-        isblock.setOnCheckedChangeListener(chklistener);
+        isBlock = (CheckBox)findViewById(R.id.isblock);
+        isBlock.setOnCheckedChangeListener(checkBlock);
 
         title = (TextView)findViewById(R.id.title);
         text = (TextView)findViewById(R.id.text);
-        subtext = (TextView)findViewById(R.id.subtext);
-        pkgname = (TextView)findViewById(R.id.pkgname);
+        subText = (TextView)findViewById(R.id.subtext);
+        pkgName = (TextView)findViewById(R.id.pkgname);
         key = (TextView)findViewById(R.id.key);
         tag = (TextView)findViewById(R.id.tag);
-
 
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
@@ -90,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
-
-
-
     private boolean isNotificationAccessEnabled(){
         String access = Settings.Secure.getString(getContentResolver(), NOTIFICATION_ACCESS);
         String pkgName = getApplicationContext().getPackageName();
@@ -113,12 +100,11 @@ public class MainActivity extends AppCompatActivity {
         private void showNotificationInfo(){
             title.setText(notification.getString("title"));
             text.setText(notification.getCharSequence("text"));
-            subtext.setText(notification.getCharSequence("subtext"));
-            pkgname.setText(notification.getString("pkgname"));
+            subText.setText(notification.getCharSequence("subtext"));
+            pkgName.setText(notification.getString("pkgname"));
             key.setText(notification.getString("key"));
             tag.setText(notification.getString("tag"));
         }
-
     }
 
 }

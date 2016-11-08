@@ -20,18 +20,17 @@
 <service 
     android:name="[@subclass_name implements the service]"
     android:label="[@service_name show for user]"
-    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-    >
+    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
     <intent-filter>
         <action android:name="android.service.notification.NotificationListenerService" />
     </intent-filter>
 </service>
 ```
 
-##### 2. Extends NotificationListenerService class
+##### 2. Extends **NotificationListenerService** class
 
 + Create a class to extend NotificationListenerService
-+ Override two main function : **onNotificationPosted** , **onNotificationRemoved**
++ Override two methods : **onNotificationPosted** , **onNotificationRemoved**
 
 ```java
 public class INotificationListener extends NotificationListenerService {
@@ -45,3 +44,4 @@ public class INotificationListener extends NotificationListenerService {
     }
 }
 ```
+
