@@ -33,7 +33,7 @@
 + Override two methods : **onNotificationPosted** , **onNotificationRemoved**
 
 ```java
-public class INotificationListener extends NotificationListenerService {
+public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         //called when get a notification

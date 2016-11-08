@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected TextView pkgName;
     protected TextView key;
     protected TextView tag;
+    protected TextView count;
 
     protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
     private CheckBox.OnCheckedChangeListener checkBlock = new CheckBox.OnCheckedChangeListener() {
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         pkgName = (TextView)findViewById(R.id.pkgname);
         key = (TextView)findViewById(R.id.key);
         tag = (TextView)findViewById(R.id.tag);
+        count = (TextView)findViewById(R.id.count);
 
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
