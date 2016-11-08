@@ -11,7 +11,7 @@ public class INotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         Notification mNotification = sbn.getNotification();
-        if(mNotification != null){
+        if(mNotification != null && MainActivity.IS_BLOCK){
             Bundle data = new Bundle();
             data.putString("title", mNotification.extras.getString(Notification.EXTRA_TITLE));
             data.putCharSequence("text", mNotification.extras.getCharSequence(Notification.EXTRA_TEXT));

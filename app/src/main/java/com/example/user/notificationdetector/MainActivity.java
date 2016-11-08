@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,7 +24,11 @@ public class MainActivity extends AppCompatActivity {
     public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
     public static String NOTIFICATION_ACCESS = "enabled_notification_listeners";
 
+    public static boolean IS_BLOCK = false;
+
     protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
+
+    protected CheckBox isblock;
 
     protected TextView title;
     protected TextView text;
@@ -31,25 +37,29 @@ public class MainActivity extends AppCompatActivity {
     protected TextView key;
     protected TextView tag;
 
-    protected TextView pkglist;
+    private CheckBox.OnCheckedChangeListener chklistener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            IS_BLOCK = isblock.isChecked();
+
+            if(!IS_BLOCK) {
+                title.setText("Title");
+                text.setText("Text");
+                subtext.setText("SubText");
+                pkgname.setText("PkgName");
+                key.setText("Key");
+                tag.setText("Tag");
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PackageManager p = getPackageManager();
-        List<ApplicationInfo> apps = p.getInstalledApplications(0);
-        List<ApplicationInfo> installed = new ArrayList<ApplicationInfo>();
-
-        for(ApplicationInfo app : apps){
-            if((app.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
-                installed.add(app);
-            } else if ((app.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-            } else {
-                installed.add(app);
-            }
-        }
+        isblock = (CheckBox)findViewById(R.id.isblock);
+        isblock.setOnCheckedChangeListener(chklistener);
 
         title = (TextView)findViewById(R.id.title);
         text = (TextView)findViewById(R.id.text);
@@ -57,14 +67,7 @@ public class MainActivity extends AppCompatActivity {
         pkgname = (TextView)findViewById(R.id.pkgname);
         key = (TextView)findViewById(R.id.key);
         tag = (TextView)findViewById(R.id.tag);
-        pkglist = (TextView)findViewById(R.id.pkglist);
 
-        String packageList = "";
-        for(int i=0;i<installed.size();i++){
-            packageList += installed.get(i).packageName + "\n";
-        }
-
-        pkglist.setText(packageList);
 
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
@@ -87,9 +90,12 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
+
+
+
     private boolean isNotificationAccessEnabled(){
         String access = Settings.Secure.getString(getContentResolver(), NOTIFICATION_ACCESS);
-        String pkgName = getPackageName();
+        String pkgName = getApplicationContext().getPackageName();
         return access.contains(pkgName);
     }
 
