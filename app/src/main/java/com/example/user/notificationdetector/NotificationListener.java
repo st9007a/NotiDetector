@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
@@ -12,8 +13,10 @@ public class NotificationListener extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+
         Notification mNotification = sbn.getNotification();
         if(mNotification != null && MainActivity.IS_BLOCK){
+
             Bundle data = new Bundle();
             data.putString("title", mNotification.extras.getString(Notification.EXTRA_TITLE));
             data.putCharSequence("text", mNotification.extras.getCharSequence(Notification.EXTRA_TEXT));
@@ -24,12 +27,10 @@ public class NotificationListener extends NotificationListenerService {
 
             Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
             intent.putExtras(data);
-            sendBroadcast(intent);
 
-            SharedPreferences settings = getApplicationContext().getSharedPreferences("message", Activity.MODE_PRIVATE);
-            settings.edit()
-                    .putString("text", data.getCharSequence("text").toString())
-                    .commit();
+            if(MainActivity.IS_ACTIVITY_ACT) {
+                sendBroadcast(intent);
+            }
 
             this.cancelNotification(sbn.getKey());
         }

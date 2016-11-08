@@ -45,3 +45,30 @@ public class NotificationListener extends NotificationListenerService {
 }
 ```
 
+###Usage
+
+##### 1. Create a NotificationListenerService
+
+See the above
+
+##### 2. Check the NotificationListener Access
+
+1. Use the below code to check the access
+
+```java
+public static String NOTIFICATION_ACCESS = "enabled_notification_listeners";
+
+private boolean isNotificationAccessEnabled(){
+  String access = Settings.Secure.getString(getContentResolver(), NOTIFICATION_ACCESS);
+  String pkgName = getApplicationContext().getPackageName();
+  return access.contains(pkgName);
+}
+```
+
+2. If this method return false, open the access page
+
+```java
+Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
+startActivity(intent);
+```
+

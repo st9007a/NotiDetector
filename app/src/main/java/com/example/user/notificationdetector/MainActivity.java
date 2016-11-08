@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     public static String INTENT_ACTION_NOTIFICATION = "user.notificationdetector";
     public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
     public static String NOTIFICATION_ACCESS = "enabled_notification_listeners";
+    public static String UI_STATE_STORAGE = "ui.state";
+    public static boolean IS_ACTIVITY_ACT = true;
     public static boolean IS_BLOCK = false;
 
     protected CheckBox isBlock;
@@ -29,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     protected TextView pkgName;
     protected TextView key;
     protected TextView tag;
-    protected TextView count;
 
     protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
     private CheckBox.OnCheckedChangeListener checkBlock = new CheckBox.OnCheckedChangeListener() {
@@ -62,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         pkgName = (TextView)findViewById(R.id.pkgname);
         key = (TextView)findViewById(R.id.key);
         tag = (TextView)findViewById(R.id.tag);
-        count = (TextView)findViewById(R.id.count);
 
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
@@ -73,19 +75,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        IS_ACTIVITY_ACT = true;
+
         if (broadcastReceiver == null)
             broadcastReceiver = new mBroadcastReceiver();
 
         registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_NOTIFICATION));
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("message", Activity.MODE_PRIVATE);
-        text.setText(settings.getString("text", "123"));
+        SharedPreferences uistate = getSharedPreferences(UI_STATE_STORAGE, Activity.MODE_PRIVATE);
+        isBlock.setChecked(uistate.getBoolean("checkblock", false));
+        title.setText(uistate.getString("title", "Title"));
+        text.setText(uistate.getString("text", "Text"));
+        subText.setText(uistate.getString("subtext", "SubText"));
+        pkgName.setText(uistate.getString("pkgname", "PkgName"));
+        key.setText(uistate.getString("key", "Key"));
+        tag.setText(uistate.getString("tag", "Tag"));
+
+
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
+
+        IS_ACTIVITY_ACT = false;
+
+        SharedPreferences settings = getSharedPreferences(UI_STATE_STORAGE, Activity.MODE_PRIVATE);
+        settings.edit()
+                .putBoolean("checkblock", isBlock.isChecked())
+                .putString("title", title.getText().toString())
+                .putString("text", text.getText().toString())
+                .putString("subtext", subText.getText().toString())
+                .putString("pkgname", pkgName.getText().toString())
+                .putString("key", key.getText().toString())
+                .putString("tag", tag.getText().toString())
+                .commit();
         unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 
     private boolean isNotificationAccessEnabled(){
