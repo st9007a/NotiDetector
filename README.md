@@ -3,9 +3,9 @@
 ### Development
 
 + Android Studio
-+ API 21 (V5.0)
++ API 21 (V5.0 **minimum support**)
 
-### Notification Listener Service
+### Setting Notification Listener Service
 
 ##### 1. Get the permission
 
@@ -70,5 +70,85 @@ private boolean isNotificationAccessEnabled(){
 ```java
 Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
 startActivity(intent);
+```
+
+##### 3. Handle the notification in **onNotificationPosted**
+
+Notification will be handled at **onNotificationPosted** method
+
+```java
+public void onNotificationPosted(StatusBarNotification sbn) {
+  
+  //get the notification info
+  Notification mNotification = sbn.getNotification();
+  
+  if(mNotification != null) {
+  
+    //create a bundle to save data
+    Bundle data = new Bundle();
+    data.putString("title", mNotification.extras.getString(Notification.EXTRA_TITLE));
+    data.putCharSequence("text", mNotification.extras.getCharSequence(Notification.EXTRA_TEXT));
+    data.putCharSequence("subtext", mNotification.extras.getCharSequence(Notification.EXTRA_SUB_TEXT));
+    data.putString("pkgname", sbn.getPackageName());
+    data.putString("key", sbn.getKey());
+    data.putString("tag", sbn.getTag());
+    
+    //create a intent to pass data to activity
+    //MainActivity.INTENT_ACTION_NOTIFICATION is static variable that use to filter the brocat, see next step 
+    Intent intent = new Intent(MainActivity.INTENT_ACTION_NOTIFICATION);
+    intent.putExtras(data);
+    
+    //use BroadcastReceiver, see next step
+    sendBroadcast(intent);
+    
+    //remove the notification at the top of screen
+    this.cancelNotification(sbn.getKey());
+  }
+}
+```
+
+##### 4. Receive the data at activity
+
+1. Create a subclass to extend BroadcastReceiver class in activity
+
+```java
+private class mBroadcastReceiver extends BroadcastReceiver{
+  public Bundle notification;
+
+  @Override
+  public void onReceive(Context context, Intent intent) {
+      
+      //handle the notification data
+      if (intent != null) {
+          notification = intent.getExtras();
+      }
+  }
+}
+```
+
+2. Register and unregister the BroadcastReceiver at **onResume** and **onPause**
+
+```java
+private mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
+
+@Override
+protected void onResume() {
+  super.onResume();
+  
+  //register
+  if(broadcastReceiver == null)
+    broadcastReceiver = new mBroadcastReceiver();
+  
+  //IntentFilter can filter the broadcast
+  registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_NOTIFICATION));
+}
+
+@Override
+protected void onPause() {
+
+  //unregister
+  unregisterReceiver(broadcastReceiver);
+  super.onPause();
+}
 ```
 
