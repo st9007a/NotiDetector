@@ -11,10 +11,6 @@
 
 + Write the follow in AndroidManifest.xml
 + Change **android:name** and **android:label** to meet your project
-+ Reference : 
-    + [Android Serveice](https://developer.android.com/guide/topics/manifest/service-element.html?hl=zh-tw)
-    + [NotificationListenerService](https://developer.android.com/reference/android/service/notification/NotificationListenerService.html)
-    + [Github: NotificationListener](https://github.com/gabrielemariotti/androiddev/tree/master/NotificationListener44)
 
 ```xml
 <service 
@@ -68,6 +64,7 @@ private boolean isNotificationAccessEnabled(){
 2. If this method return false, open the access page
 
 ```java
+public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
 Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
 startActivity(intent);
 ```
@@ -151,4 +148,10 @@ protected void onPause() {
   super.onPause();
 }
 ```
+
+### Reference
++ [Android Serveice](https://developer.android.com/guide/topics/manifest/service-element.html?hl=zh-tw)
++ [NotificationListenerService](https://developer.android.com/reference/android/service/notification/NotificationListenerService.html)
++ [Github: NotificationListener](https://github.com/gabrielemariotti/androiddev/tree/master/NotificationListener44)
+
 
