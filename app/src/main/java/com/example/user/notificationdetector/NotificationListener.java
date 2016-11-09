@@ -15,6 +15,7 @@ public class NotificationListener extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         Notification mNotification = sbn.getNotification();
+
         if(mNotification != null && MainActivity.IS_BLOCK){
 
             Bundle data = new Bundle();
@@ -30,6 +31,18 @@ public class NotificationListener extends NotificationListenerService {
 
             if(MainActivity.IS_ACTIVITY_ACT) {
                 sendBroadcast(intent);
+            }
+            else {
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("SHARE_TAG", MODE_PRIVATE);
+                preferences.edit().clear().commit();
+                preferences.edit()
+                        .putString("title", data.getString("title"))
+                        .putString("text", data.getCharSequence("text").toString())
+                        .putString("subtext", data.getCharSequence("subtext").toString())
+                        .putString("pkgname", data.getString("pkgname"))
+                        .putString("key", data.getString("key"))
+                        .putString("tag", data.getString("tag"))
+                        .commit();
             }
 
             this.cancelNotification(sbn.getKey());

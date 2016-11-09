@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_NOTIFICATION));
 
-        SharedPreferences uistate = getSharedPreferences(UI_STATE_STORAGE, Activity.MODE_PRIVATE);
+        SharedPreferences uistate = getSharedPreferences(UI_STATE_STORAGE, MODE_PRIVATE);
         isBlock.setChecked(uistate.getBoolean("checkblock", false));
         title.setText(uistate.getString("title", "Title"));
         text.setText(uistate.getString("text", "Text"));
@@ -92,7 +92,13 @@ public class MainActivity extends AppCompatActivity {
         key.setText(uistate.getString("key", "Key"));
         tag.setText(uistate.getString("tag", "Tag"));
 
-
+        SharedPreferences share = getApplicationContext().getSharedPreferences("SHARE_TAG", MODE_PRIVATE);
+        title.setText(share.getString("title", title.getText().toString()));
+        text.setText(share.getString("text", text.getText().toString()));
+        subText.setText(share.getString("subtext", subText.getText().toString()));
+        pkgName.setText(share.getString("pkgname", pkgName.getText().toString()));
+        key.setText(share.getString("key", key.getText().toString()));
+        tag.setText(share.getString("tag", tag.getText().toString()));
     }
 
     @Override
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         IS_ACTIVITY_ACT = false;
 
-        SharedPreferences settings = getSharedPreferences(UI_STATE_STORAGE, Activity.MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences(UI_STATE_STORAGE, MODE_PRIVATE);
         settings.edit()
                 .putBoolean("checkblock", isBlock.isChecked())
                 .putString("title", title.getText().toString())
