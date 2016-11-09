@@ -93,12 +93,7 @@ public class MainActivity extends AppCompatActivity {
         tag.setText(uistate.getString("tag", "Tag"));
 
         SharedPreferences share = getApplicationContext().getSharedPreferences("SHARE_TAG", MODE_PRIVATE);
-        title.setText(share.getString("title", title.getText().toString()));
         text.setText(share.getString("text", text.getText().toString()));
-        subText.setText(share.getString("subtext", subText.getText().toString()));
-        pkgName.setText(share.getString("pkgname", pkgName.getText().toString()));
-        key.setText(share.getString("key", key.getText().toString()));
-        tag.setText(share.getString("tag", tag.getText().toString()));
     }
 
     @Override

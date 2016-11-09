@@ -36,12 +36,7 @@ public class NotificationListener extends NotificationListenerService {
                 SharedPreferences preferences = getApplicationContext().getSharedPreferences("SHARE_TAG", MODE_PRIVATE);
                 preferences.edit().clear().commit();
                 preferences.edit()
-                        .putString("title", data.getString("title"))
                         .putString("text", data.getCharSequence("text").toString())
-                        .putString("subtext", data.getCharSequence("subtext").toString())
-                        .putString("pkgname", data.getString("pkgname"))
-                        .putString("key", data.getString("key"))
-                        .putString("tag", data.getString("tag"))
                         .commit();
             }
 
