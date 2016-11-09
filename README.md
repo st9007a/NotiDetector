@@ -64,7 +64,7 @@ private boolean isNotificationAccessEnabled(){
 2. If this method return false, open the access page
 
 ```java
-public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
+final String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
 Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
 startActivity(intent);
 ```
@@ -148,6 +148,10 @@ protected void onPause() {
   super.onPause();
 }
 ```
+### Build
+
+1. Run -> Run 'app'
+2. Output path: app/build/outputs/apk/app-debug.apk
 
 ### Reference
 + [Android Serveice](https://developer.android.com/guide/topics/manifest/service-element.html?hl=zh-tw)
