@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public static String INTENT_ACTION_NOTIFICATION = "user.notificationdetector";
     public static String NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
     public static String NOTIFICATION_ACCESS = "enabled_notification_listeners";
-    public static String UI_STATE_STORAGE = "ui.state";
+    public static String UI_STATE_STORAGE = "ui_state";
     public static boolean IS_ACTIVITY_ACT = true;
     public static boolean IS_BLOCK = false;
 
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected TextView tag;
 
     protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
+
+    private NotificationDB db = null;
     private CheckBox.OnCheckedChangeListener checkBlock = new CheckBox.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         key = (TextView)findViewById(R.id.key);
         tag = (TextView)findViewById(R.id.tag);
 
+        db = NotificationDB.getInstance(this);
+
         if(!isNotificationAccessEnabled()){
             Intent intent = new Intent(NOTIFICATION_LISTENER_SETTINGS);
             startActivity(intent);
@@ -91,9 +95,6 @@ public class MainActivity extends AppCompatActivity {
         pkgName.setText(uistate.getString("pkgname", "PkgName"));
         key.setText(uistate.getString("key", "Key"));
         tag.setText(uistate.getString("tag", "Tag"));
-
-        SharedPreferences share = getApplicationContext().getSharedPreferences("SHARE_TAG", MODE_PRIVATE);
-        text.setText(share.getString("text", text.getText().toString()));
     }
 
     @Override
