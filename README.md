@@ -2,7 +2,7 @@
 
 ### Development
 
-+ Android Studio
++ Android Studio 2.2.2
 + API 21 (V5.0 **minimum support**)
 
 ### Setting Notification Listener Service
@@ -41,7 +41,7 @@ public class NotificationListener extends NotificationListenerService {
 }
 ```
 
-###Usage
+### Usage
 
 ##### 1. Create a NotificationListenerService
 
