@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected TextView key;
     protected TextView tag;
 
+    protected Button b;
+
     protected  mBroadcastReceiver broadcastReceiver = new mBroadcastReceiver();
 
     private NotificationDB db = null;
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
